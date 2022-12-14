@@ -5,17 +5,17 @@ const sendEmail = async (req, res = response) => {
 	try {
 		const adopter = JSON.parse(req.body.adopter);
 		const pet = JSON.parse(req.body.pet);
-
-		await mail({
+		const send = await mail({
 			adopter,
 			pet,
 			frontal: req.files.frontal,
 			reverso: req.files.reverso,
 			image: req.files.image,
+			pedigree: req.files?.pedigree,
 		});
 
 		res.status(200).json({
-			ok: true,
+			ok: send,
 			msg: "Datos enviados correctamente",
 		});
 	} catch (error) {

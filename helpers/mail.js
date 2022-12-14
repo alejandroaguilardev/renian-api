@@ -16,29 +16,38 @@ const config = () => {
 	});
 };
 
-const mail = async ({ adopter, pet, frontal, reverso, image }) => {
+const mail = async ({ adopter, pet, frontal, reverso, image, pedigree }) => {
 	try {
 		let transporter = config();
+		let attachments = [];
 
-		await transporter.sendMail({
+		attachments.push({
+			filename: "frontal.jpg",
+			content: frontal.data,
+		});
+		attachments.push({
+			filename: "reverso.jpg",
+			content: reverso.data,
+		});
+		attachments.push({
+			filename: "Mascota.jpg",
+			content: image.data,
+		});
+
+		if (pedigree) {
+			attachments.push({
+				filename: "Pedigree.jpg",
+				content: pedigree.data,
+			});
+		}
+
+		const error = await transporter.sendMail({
 			from: '"RENIAN" <no-reply@renian.pe>', // sender address,
-			to: [adopter.email, "info@renian.pe"],
+			to: [adopter.email, "alexaguilar281@gmail.com"],
+			// 			to: [adopter.email, "info@renian.pe"],
 			subject: "RENIAN - Solicitud de Registro",
 			html: template({ adopter, pet }),
-			attachments: [
-				{
-					filename: "frontal.jpg",
-					content: frontal.data,
-				},
-				{
-					filename: "reverso.jpg",
-					content: reverso.data,
-				},
-				{
-					filename: "Mascota.jpg",
-					content: image.data,
-				},
-			],
+			attachments,
 		});
 		return true;
 	} catch (error) {

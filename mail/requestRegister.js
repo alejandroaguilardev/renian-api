@@ -1,5 +1,54 @@
-const template = ({ adopter, pet }) => {
+const colours = require("../public/Json/colours.json");
+const countries = require("../public/Json/countries.json");
+const species = require("../public/Json/species.json");
+const persons = require("../public/Json/person.json");
+const types = require("../public/Json/type.json");
+const DOG = require("../public/Json/race/Dogs.json");
+const CAT = require("../public/Json/race/Cats.json");
 
+const template = ({ adopter, pet }) => {
+	const races = {
+		DOG,
+		CAT,
+	};
+
+	let country = "";
+	for (const values of countries.countries) {
+		if (adopter.country === values.code) country = values["es-Es"];
+	}
+
+	let person = "";
+	for (const values of persons.person) {
+		if (adopter.person === values.value) person = values["es-Es"];
+	}
+
+	let type = "";
+	for (const values of types.type) {
+		if (adopter.type === values.value) type = values["es-Es"];
+	}
+
+	let countryPet = "";
+	for (const values of countries.countries) {
+		if (pet.country === values.code) countryPet = values["es-Es"];
+	}
+
+	let colour = [];
+	for (const iterator of pet.colour.split(",")) {
+		for (const values of colours) {
+			if (iterator === values.value) colour.push(values["es-Es"]);
+		}
+	}
+	colour = colour.join(", ");
+
+	let specie = "";
+	for (const values of species) {
+		if (pet.type === values.value) specie = values["es-Es"];
+	}
+
+	let race = "";
+	for (const values of races[pet.type]) {
+		if (pet.race === values.value) race = values["es-Es"];
+	}
 
 	return `<!DOCTYPE html>
     <html lang="es">
@@ -365,11 +414,12 @@ const template = ({ adopter, pet }) => {
                                                 </p>
     
                                                 <p>
-                                                    <span class="bold">País (ISO 3166‑1; alfa‑2):</span>
-                                                    ${adopter.country}
+                                                    <span class="bold">País :</span>
+                                                    ${country}
                                                 </p>
                                                 <p>
-                                                    <span class="bold">Tipo de Persona:</span> ${adopter.person }
+                                                    <span class="bold">Tipo de Persona:</span>
+                                                                                                                                                 ${person}
                                                 </p>
                                                 <p>
                                                     <span class="bold">Documento de Identidad:</span>
@@ -381,29 +431,44 @@ const template = ({ adopter, pet }) => {
                                                 </p>
     
                                                 <p>
-                                                    <span class="bold">Tipo de Adoptante:</span> ${adopter.type}
+                                                    <span class="bold">Tipo de Adoptante:</span> 
+                                                    ${type}
+                                           
                                                 </p>
     
                                                 <p>
                                                     <span class="bold">Dirección Pública:</span>
-                                                    ${adopter.address? adopter.address: "No tengo."}
+                                                    ${
+																											adopter.address
+																												? adopter.address
+																												: "No tengo."
+																										}
                                                 </p>
     
                                                 <br />
     
-                                                <p><span class="bold">Sexo:</span> ${adopter.gender}</p>
+                                                <p><span class="bold">Sexo:</span> 
+                                                ${ adopter.gender==="MAN" ? "HOMBRE": "" }
+                                                ${ adopter.gender==="WOMAN" ? "MUJER": "" }
+                                                </p>
                                                 <p>
                                                     <span class="bold">Fecha de Nacimiento:</span>
                                                     ${adopter.date}
                                                 </p>
                                                 <p>
-                                                    E-<span class="bold">mail:</span> ${adopter.email}
+                                                    E-<span class="bold">mail:</span> ${
+																											adopter.email
+																										}
                                                 </p>
                                                 <p>
-                                                    <span class="bold">Teléfono:</span> ${adopter.phone}
+                                                    <span class="bold">Teléfono:</span> ${
+																											adopter.phone
+																										}
                                                 </p>
                                                 <br />
-                                                ${adopter.country == "PE" && `
+                                                ${
+																									adopter.country == "PE" &&
+																									`
                                                 <p>
                                                     <span class="bold">Department:</span>
                                                     ${adopter.department}
@@ -416,7 +481,8 @@ const template = ({ adopter, pet }) => {
                                                     <span class="bold">Distrito:</span>
                                                     ${adopter.district}
                                                 </p>
-                                                `}
+                                                `
+																								}
                                                 <p>
                                                     <span class="bold">Dirección:</span>
                                                     ${adopter.direction}
@@ -454,12 +520,19 @@ const template = ({ adopter, pet }) => {
     
                                                 <p>
                                                     <span class="bold">Microchip:</span>
-                                                    ${pet.chip? pet.chip: "No tengo Microchip"}
+                                                    ${
+																											pet.chip
+																												? pet.chip
+																												: "No tengo Microchip"
+																										}
                                                 </p>
-                                                ${pet.chip && `<p>
+                                                ${
+																									pet.chip &&
+																									`<p>
 												    <span class="bold">Fecha del Chip:</span>
 													${pet.chipDate}</p>
-												`}
+												`
+																								}
     
                                                 <p>
                                                     <span class="bold">Nombre:</span>
@@ -467,29 +540,74 @@ const template = ({ adopter, pet }) => {
                                                 </p>
     
                                                 <p>
-                                                    <span class="bold">País (ISO 3166‑1; alfa‑2):</span>
-                                                    ${pet.country}
+                                                    <span class="bold">País:</span>
+                                                    ${countryPet}
                                                 </p>
-                                                <p><span class="bold">Animal:</span> ${pet.type}</p>
-                                                <p><span class="bold">Raza:</span> ${pet.race}</p>
+                                                <p><span class="bold">Animal:</span> 
+                                                ${specie}
+                                            </p>
+                                                <p><span class="bold">Raza:</span>
+                                                ${race}
+                                           </p>
                                                 <br />
                                                 <p>
-                                                    <span class="bold">Fecha de Nacimiento:</span> ${pet.date}
+                                                    <span class="bold">Fecha de Nacimiento:</span> ${
+																											pet.date
+																										}
                                                 </p>
                                                 <p>
-                                                    <span class="bold">Fecha de Adopción:</span> ${pet.dateAdoption}
+                                                    <span class="bold">Fecha de Adopción:</span> ${
+																											pet.dateAdoption
+																										}
                                                 </p>
-                                                <p><span class="bold">Sexo:</span> ${pet.gender}</p>
-                                                <p><span class="bold">Color:</span> ${pet.colour}</p>
+                                                <p><span class="bold">Sexo:</span>     
+                                                ${ pet.gender==="MALE" ? "MACHO": "" }
+                                                ${ pet.gender==="FEMALE" ? "HEMBRA": "" }</p>
+                                                <p><span class="bold">Color:</span> ${colour}
+                                                                                                </p>
                                                 <p>
                                                     <span class="bold">Esterilizado:</span>
-                                                    ${pet.sterilized}
+                                                    ${
+																											pet.sterilized === "YES"
+																												? "SI"
+																												: ""
+																										}
+                                                    ${
+																											pet.sterilized === "NO"
+																												? "NO"
+																												: ""
+																										}
+                                                    ${
+																											pet.sterilized ===
+																											"CASTRATED"
+																												? "CASTRADO"
+																												: ""
+																										}
                                                 </p>
     
-                                                ${pet.chipMother && `<p>
+                                                ${
+																									pet.chipMother &&
+																									`<p>
 													<span class="bold">Madre Chip:</span>${pet.chipMother}
 												</p>
-												`}
+												`
+																								}
+
+                                                <br/>
+                                                <h4>Declaro bajo juramento que:</h4>
+                                                <p>
+                                                    Soy Propietario de la mascota a registrar
+                                                </p>
+
+                                                <p>
+                                                ${pet.chip
+                                                ? "Mi mascota a registrar cuenta con microchip o identificación interna"
+                                                : "Mi mascota a registrar no cuenta con microchip o identificación interna"}
+                                                </p>
+
+                                                <p>
+                                                Acepto compartir mi información en las búsquedas de la plataforma
+                                                </p>
                                             </td>
                                         </tr>
                                     </table>
