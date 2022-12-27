@@ -16,7 +16,15 @@ const config = () => {
 	});
 };
 
-const mail = async ({ adopter, pet, frontal, reverso, image, pedigree }) => {
+const mail = async ({
+	adopter,
+	pet,
+	frontal,
+	reverso,
+	image,
+	pedigree,
+	entity = "RENIAN",
+}) => {
 	try {
 		let transporter = config();
 		let attachments = [];
@@ -42,11 +50,18 @@ const mail = async ({ adopter, pet, frontal, reverso, image, pedigree }) => {
 		}
 
 		const error = await transporter.sendMail({
-			from: '"RENIAN" <no-reply@renian.pe>', // sender address,
-			to: [adopter.email, "alexaguilar281@gmail.com"],
-			// 			to: [adopter.email, "info@renian.pe"],
-			subject: "RENIAN - Solicitud de Registro",
-			html: template({ adopter, pet }),
+			from:
+				entity === "RENIAN"
+					? '"RENIAN" <no-reply@renian.pe>'
+					: "W.A.R. <no-reply@worldanimalregistry.org>",
+
+			// to: [adopter.email, "alexaguilar281@gmail.com"],
+			to: [
+				adopter.email,
+				entity === "RENIAN" ? "info@renian.pe" : "info@qolkrex.foundation",
+			],
+			subject: entity === "RENIAN" ?  "RENIAN - Solicitud de Registro" : "W.A.R - Solicitud de Registro ",
+			html: template({ adopter, pet, entity }),
 			attachments,
 		});
 		return true;

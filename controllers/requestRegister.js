@@ -4,6 +4,7 @@ const { mail } = require("../helpers/mail");
 const sendEmail = async (req, res = response) => {
 	try {
 		const adopter = JSON.parse(req.body.adopter);
+
 		const pet = JSON.parse(req.body.pet);
 		const send = await mail({
 			adopter,
@@ -12,6 +13,7 @@ const sendEmail = async (req, res = response) => {
 			reverso: req.files.reverso,
 			image: req.files.image,
 			pedigree: req.files?.pedigree,
+			entity: req.body.entity ? "W.A.R." : "RENIAN",
 		});
 
 		res.status(200).json({

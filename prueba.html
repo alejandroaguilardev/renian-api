@@ -1,61 +1,9 @@
-const colours = require("../public/Json/colours.json");
-const countries = require("../public/Json/countries.json");
-const species = require("../public/Json/species.json");
-const persons = require("../public/Json/person.json");
-const types = require("../public/Json/type.json");
-const DOG = require("../public/Json/race/Dogs.json");
-const CAT = require("../public/Json/race/Cats.json");
-
-const template = ({ adopter, pet, entity }) => {
-	const races = {
-		DOG,
-		CAT,
-	};
-
-	let country = "";
-	for (const values of countries.countries) {
-		if (adopter.country === values.code) country = values["es-Es"];
-	}
-
-	let person = "";
-	for (const values of persons.person) {
-		if (adopter.person === values.value) person = values["es-Es"];
-	}
-
-	let type = "";
-	for (const values of types.type) {
-		if (adopter.type === values.value) type = values["es-Es"];
-	}
-
-	let countryPet = "";
-	for (const values of countries.countries) {
-		if (pet.country === values.code) countryPet = values["es-Es"];
-	}
-
-	let colour = [];
-	for (const iterator of pet.colour.split(",")) {
-		for (const values of colours) {
-			if (iterator === values.value) colour.push(values["es-Es"]);
-		}
-	}
-	colour = colour.join(", ");
-
-	let specie = "";
-	for (const values of species) {
-		if (pet.type === values.value) specie = values["es-Es"];
-	}
-
-	let race = "";
-	for (const values of races[pet.type]) {
-		if (pet.race === values.value) race = values["es-Es"];
-	}
-
-	return `<!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="es">
         <head>
             <meta charset="utf-8" />
             <meta http-equiv="x-ua-compatible" content="ie=edge" />
-            <title>${entity} - Solicitud de Registro</title>
+            <title>RENIAN - Solicitud de Registro</title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <style type="text/css">
                 @media screen {
@@ -273,24 +221,16 @@ const template = ({ adopter, pet, entity }) => {
                             cellpadding="0"
                             cellspacing="0"
                             width="100%"
-                            style="max-width: 600px; 
-                             
-                           
-                                    
-                            "
+                            style="max-width: 600px"
                         >
                             <tr>
                                 <td
                                     class="mobile_toolbar__Bo3ir"
                                     align="center"
                                     valign="top"
-                                    style="padding: 15px 0;
-                                    ${entity === 'RENIAN' ? ''  : 'background:#04cebd!important'}
-                                    "
+                                    style="padding: 15px 0"
                                 >
-                                ${
-                                    entity ==="RENIAN" ?
-                                    `<a
+                                    <a
                                         href="https://renian.pe/"
                                         target="_blank"
                                         style="display: inline-block"
@@ -301,14 +241,7 @@ const template = ({ adopter, pet, entity }) => {
                                             border="0"
                                             style="display: block; width: 200px; max-width: 200px"
                                         />
-                                    </a>`
-                                    :
-                                        ` <a href="https://firulaixcoin.finance/" target="_blank" style="display: inline-block">
-                                        <img src="https://firulaixcoin.finance/images/mail/war.png" alt="Logo" border="0"
-                                            style="display: block; width: 400px; max-width: 400px" />
-                                    </a>`
-                                }
-                                  
+                                    </a>
                                 </td>
                             </tr>
                         </table>
@@ -640,7 +573,7 @@ const template = ({ adopter, pet, entity }) => {
                                         "
                                     >
                                         <p>
-                                            En ${entity} estamos comprometidos con tu seguridad y la de los
+                                            En Renian estamos comprometidos con tu seguridad y la de los
                                             tuyos, todo el proceso es transparente y descentralizado.
                                         </p>
     
@@ -659,7 +592,7 @@ const template = ({ adopter, pet, entity }) => {
                                         </p>
                                         <br />
                                         <p style="margin: 0">
-                                            ${entity},<br />
+                                            RENIAN,<br />
                                             Soporte
                                         </p>
                                     </div>
@@ -691,92 +624,48 @@ const template = ({ adopter, pet, entity }) => {
                                 >
                                     <p style="margin: 0">
                                         Recibió este correo electrónico porque acaba de registrar una
-                                        aplicación en ${entity}
+                                        aplicación en Renian.pe
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="icons">
-                                     ${
-                                        entity === "RENIAN" ?
-                                        `
                                         <a
-                                        href="https://www.facebook.com/firulaixfinance"
-                                        class="icons facebook"
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                    >
-                                        <img
-                                            src="https://firulaixcoin.finance/images/email/facebook.png"
-                                            alt="facebook"
-                                        />
-                                    </a>
-
-                                    <a
-                                        href="https://www.instagram.com/renian_peru/?hl=es-la"
-                                        target="_blank"
-                                        class="icons instagram"
-                                        rel="noreferrer noopener"
-                                    >
-                                        <img
-                                            src="https://firulaixcoin.finance/images/email/instagram.png"
-                                            alt="instagram"
-                                        />
-                                    </a>
-
-                                    <a
-                                        href="https://www.tiktok.com/@renian.peru?lang=en"
-                                        class="icons reddit"
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                    >
-                                        <img
-                                            src="https://firulaixcoin.finance/images/email/tik-tok.png"
-                                            alt="tiktok"
-                                        />
-                                    </a>
-                                        `
-                                        :
-
-                                        `
-                                        <a href="https://www.facebook.com/firulaixfinance" class="icons facebook"
-                                        target="_blank" rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/facebook.png"
-                                            alt="facebook" />
-                                    </a>
-                                    <a href="https://www.youtube.com/channel/UCrOJRzI105YKDHa9zwABAqQ"
-                                        class="icons youtube" target="_blank" rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/youtube.png" alt="youtube" />
-                                    </a>
-                                    <a href="https://twitter.com/firulaixcoin" target="_blank" class="icons twitter"
-                                        rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/twitter.png" alt="twitter" />
-                                    </a>
-                                    <a href="https://www.instagram.com/firulaixcoin/" target="_blank"
-                                        class="icons instagram" rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/instagram.png"
-                                            alt="instagram" />
-                                    </a>
+                                            href="https://www.facebook.com/firulaixfinance"
+                                            class="icons facebook"
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                        >
+                                            <img
+                                                src="https://firulaixcoin.finance/images/email/facebook.png"
+                                                alt="facebook"
+                                            />
+                                        </a>
     
-                                    <a href="https://discord.gg/3YYpSKw7m8" target="_blank" class="icons discord"
-                                        rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/discord.png" alt="discord" />
-                                    </a>
-                                    <a href="https://t.me/firulaixcoin" class="icons telegram" target="_blank"
-                                        rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/telegram.png"
-                                            alt="telegram" />
-                                    </a>
+                                        <a
+                                            href="https://www.instagram.com/renian_peru/?hl=es-la"
+                                            target="_blank"
+                                            class="icons instagram"
+                                            rel="noreferrer noopener"
+                                        >
+                                            <img
+                                                src="https://firulaixcoin.finance/images/email/instagram.png"
+                                                alt="instagram"
+                                            />
+                                        </a>
     
-                                    <a href="https://www.reddit.com/user/firulaix" class="icons reddit" target="_blank"
-                                        rel="noreferrer noopener">
-                                        <img src="https://firulaixcoin.finance/images/email/reddit.png" alt="reddit" />
-                                    </a>                                        
-                                        `
-
-                                     }
-                                       
+                                        <a
+                                            href="https://www.tiktok.com/@renian.peru?lang=en"
+                                            class="icons reddit"
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                        >
+                                            <img
+                                                src="https://firulaixcoin.finance/images/email/tik-tok.png"
+                                                alt="tiktok"
+                                            />
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -786,7 +675,3 @@ const template = ({ adopter, pet, entity }) => {
             </table>
         </body>
     </html>
-`;
-};
-
-module.exports = { template };
